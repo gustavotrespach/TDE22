@@ -1,30 +1,60 @@
+import psutil
 import platform
 import cpuinfo
-import psutil
-r= " "
 
-while r != "N":
-    menu=int(input("[1] para saber o sistema operacional.\n[2] para saber nformações do processador.\n[3] para saber nformações de memória.\n[4] para saber nformações de armazenamento (tamanho do HD e SSD).\n[5] para sair do programa.\n Qual sua opção? " ))
-    while menu > 5 or menu  < 1:
-        print("NÚMERO INVÁLIDO TENTE NOVAMENTE ")
-        menu=int(input("[1] para saber o sistema operacional.\n[2] para saber nformações do processador.\n[3] para saber nformações de memória.\n[4] para saber nformações de armazenamento (tamanho do HD e SSD).\n[5] para sair do programa.\n Qual sua opção?" ))
-    
-    if menu == 1 :
-        print(f"o sistema operacional do seu computador é {platform.system()} e a sua versão é {platform.release()} ")
-        r=str(input("Quer continuar [S/N]")).upper()
-    if menu == 2:
-        processador =cpuinfo.get_cpu_info_json()
-        print(f" o seu processador é um {processador}")
-        r=str(input("Quer continuar [S/N]")).upper()
-    if menu == 3:
-        mem = psutil.virtual_memory()
-        mem_RAM = mem.total / 1024 ** 3
-        print(f" voce tem memória GB {mem}")
-        r=str(input("Quer continuar [S/N]")).upper()
-    if menu == 4:
-        armazenamento = psutil.disk_usage
-        print(f"informações sobre o armazenamento {armazenamento}")
-        r=str(input("Quer continuar [S/N]")).upper()
-    while r not in "SN":
-        print("LETRA INVÁLIDA TENTE NOVAMENTE")
-        r=str(input("Quer continuar [S/N]")).upper()
+sistema_operacional =  platform.system()
+sistema_operacional_2 = platform.release()
+
+lista_processador = cpuinfo.get_cpu_info()
+for i, marca in lista_processador.items():     
+    if i == 'brand_raw':
+        processador = marca
+
+'''solução temporária possivelmente eterna
+explicação: como o que era armazenado era uma grande classe (classe é uma variável seguida de um valor, como: 'cpuinfo_version': [9, 0, 0]),
+portanto eu fiz um for onde o i percorre a variável e a marca percorre o valor, então quando a variável fosse a brand_raw, que é a variável que
+armazenava o valor que eu queria, eu armazenava esse valor em ula variável para usar posteriormente.
+
+sim, o .items() não fica colorido mas sem ele é tanta informação que crasha o debug'''
+
+memoria = psutil.virtual_memory()
+memoria_GB = memoria.total / 1024 ** 3
+memoria_livre = memoria.available / 1024 ** 3
+armazenamento = psutil.disk_io_counters()
+
+
+def barra():
+    print('-------------------------------------')
+
+print('QUAIS INFORMÇÔES DO SEU PC DESEJA SABER?')
+print("---------------MENU---------------------")
+print('Digite "1" para obter informações do seu Sistema Operacional.')
+barra()
+print('Digite "2" para obter informações do seu Processador.')
+barra()
+print('Digite "3" para obter informações da sua Memória RAM.')
+barra()
+print('Digite "4" para obter informações de armazenamento(HD/SSD).')
+barra()
+print('Digite "5" para sair.')
+barra()
+
+while True:
+    n = int(input("Digite aqui o número da alternativa que deseja saber: "))
+    while n < 1 or n > 5:
+        n = int(input("OPÇÃO INVÁLIDA!! /Digite um opção válida!"))
+        
+    if n == 1:
+        print(f"{sistema_operacional} é seu Sistema Operacional e {sistema_operacional_2} é a sua versão.\n")             
+        continue
+    elif n == 2:
+        print(f"Este é o seu Processador: {processador}")
+        continue
+    elif n == 3:
+        print(f"Seu PC tem {memoria_GB} GB de Mémoria RAM e {memoria_livre} GB de Memória Livre")        
+        continue
+    elif n == 4:
+        print(f"{armazenamento}")
+        continue
+    else:
+        break
