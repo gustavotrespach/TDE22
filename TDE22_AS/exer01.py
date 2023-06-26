@@ -20,41 +20,46 @@ sim, o .items() não fica colorido mas sem ele é tanta informação que crasha 
 memoria = psutil.virtual_memory()
 memoria_GB = memoria.total / 1024 ** 3
 memoria_livre = memoria.available / 1024 ** 3
-armazenamento = psutil.disk_io_counters()
-
+armazenamento= psutil.disk_usage('/')
+disk_gb= armazenamento.total / 1024 ** 3
+disk_free= armazenamento.free / 1024 ** 3
+disk_used= armazenamento.used / 1024 ** 3
 
 def barra():
     print('-------------------------------------')
 
-print('QUAIS INFORMÇÔES DO SEU PC DESEJA SABER?')
-print("---------------MENU---------------------")
-print('Digite "1" para obter informações do seu Sistema Operacional.')
-barra()
-print('Digite "2" para obter informações do seu Processador.')
-barra()
-print('Digite "3" para obter informações da sua Memória RAM.')
-barra()
-print('Digite "4" para obter informações de armazenamento(HD/SSD).')
-barra()
-print('Digite "5" para sair.')
-barra()
-
 while True:
-    n = int(input("Digite aqui o número da alternativa que deseja saber: "))
+    print('QUAIS INFORMÇÔES DO SEU PC DESEJA SABER?')
+    print("---------------MENU---------------------")
+    print('Digite "1" para obter informações do seu Sistema Operacional.')
+    barra()
+    print('Digite "2" para obter informações do seu Processador.')
+    barra()
+    print('Digite "3" para obter informações da sua Memória RAM.')
+    barra()
+    print('Digite "4" para obter informações de armazenamento(HD/SSD).')
+    barra()
+    print('Digite "5" para sair.')
+    barra()
+    print("\n")
+    n = int(input("Digite aqui o número da alternativa que deseja saber:"))
     while n < 1 or n > 5:
-        n = int(input("OPÇÃO INVÁLIDA!! /Digite um opção válida!"))
-        
+        n = int(input("OPÇÃO INVÁLIDA!! /Digite um opção válida!"))     
     if n == 1:
-        print(f"{sistema_operacional} é seu Sistema Operacional e {sistema_operacional_2} é a sua versão.\n")             
+        print(f"{sistema_operacional} é seu Sistema Operacional e {sistema_operacional_2} é a sua versão.")   
+        print("\n")          
         continue
     elif n == 2:
         print(f"Este é o seu Processador: {processador}")
+        print("\n")
         continue
     elif n == 3:
-        print(f"Seu PC tem {memoria_GB} GB de Mémoria RAM e {memoria_livre} GB de Memória Livre")        
+        print(f"Seu PC tem {round(memoria_GB)} GB de Mémoria RAM e {round(memoria_livre)} GB de Memória Livre")
+        print("\n")        
         continue
     elif n == 4:
-        print(f"{armazenamento}")
+        print(f'Armazenamento: {disk_gb:,.2f} gigas total, {disk_used:,.2f} em uso, {disk_free:,.2f} disponível. ')
+        print("\n")
         continue
     else:
         break
